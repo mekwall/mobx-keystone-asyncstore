@@ -1,0 +1,17 @@
+name: CI
+on: [push]
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      - uses: mattallty/jest-github-action@v1
+        with:
+          test-command: "yarn test --coverage"
+      - uses: codecov/codecov-action@v1
+        with:
+          directory: ./coverage
