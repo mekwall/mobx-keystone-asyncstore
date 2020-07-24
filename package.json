@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc -b tsconfig.build.json"
   },
   "peerDependencies": {
     "mobx": "^5.15.4",
