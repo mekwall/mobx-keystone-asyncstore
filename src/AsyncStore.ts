@@ -1,4 +1,4 @@
-import { action, observable, reaction, ObservableMap } from "mobx";
+import { action, observable, reaction } from "mobx";
 import {
   AnyModel,
   ExtendedModel,
