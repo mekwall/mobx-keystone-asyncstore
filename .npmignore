@@ -11,3 +11,4 @@ src
 coverage
 babel.config.js
 tsconfig.json
+tsconfig.*.json
