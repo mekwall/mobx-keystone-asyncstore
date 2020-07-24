@@ -103,8 +103,8 @@ export function AsyncStore<
       const ct = this.containers.get(id)!;
       try {
         const item: InstanceType<AModel> | undefined = fetchOne
-          ? yield fetchOne(id)
-          : yield fetchMany!([id]);
+          ? yield fetchOne.call(this, id)
+          : yield fetchMany!.call(this, [id]);
         ct.setValue(item);
       } catch (e) {
         ct.setFailstate(e);
@@ -134,7 +134,7 @@ export function AsyncStore<
         return ct;
       });
       try {
-        const items = yield fetchMany(ids);
+        const items = yield fetchMany.call(this, ids);
         items.forEach((item: InstanceType<AModel>) => {
           const ct = this.containers.get(item.$modelId);
           ct?.setValue(item);
@@ -156,7 +156,7 @@ export function AsyncStore<
         throw new Error("Not implemented");
       }
       this.setPending();
-      const items = yield fetchAll();
+      const items = yield fetchAll.call(this);
       if (items.length > 0) {
         items.forEach((item: InstanceType<AModel>) => {
           const ct =
