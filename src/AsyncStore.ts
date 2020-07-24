@@ -47,7 +47,7 @@ export function AsyncStore<
 
   const BaseAsyncStoreModel = Model({
     containers: prop_mapObject<
-      Map<string, IAsyncContainer<InstanceType<AModel>>>
+      Map<string, InstanceType<typeof AsyncContainer>>
     >(() => new Map()),
   });
 
@@ -204,7 +204,7 @@ export function AsyncStore<
     }
 
     @modelAction
-    public getOne(id: string): IAsyncContainer<InstanceType<AModel>> {
+    public getOne(id: string): InstanceType<typeof AsyncContainer> {
       const ct = this.containers.get(id) || new AsyncContainer({ id });
       this.containers.set(id, ct);
       if (ct.shouldFetch && !this.fetchQueue.includes(id)) {
@@ -214,7 +214,7 @@ export function AsyncStore<
     }
 
     @modelAction
-    public getMany(ids: string[]): IAsyncContainer<InstanceType<AModel>>[] {
+    public getMany(ids: string[]): InstanceType<typeof AsyncContainer>[] {
       const cts = ids.map((id) => {
         let ct = this.containers.get(id);
         if (!ct) {
@@ -228,7 +228,7 @@ export function AsyncStore<
     }
 
     @modelAction
-    public getAll(): IAsyncContainer<InstanceType<AModel>>[] {
+    public getAll(): InstanceType<typeof AsyncContainer>[] {
       if (!this.hasAll && !this.fetchQueue.includes("*")) {
         this.addToFetchQueue("*");
       }
@@ -238,7 +238,7 @@ export function AsyncStore<
 
   const ExportedBaseAsyncStore = BaseAsyncStore as ModelClassDeclaration<
     typeof BaseAsyncStoreModel,
-    IBaseAsyncStore<IAsyncContainer<InstanceType<AModel>>>
+    IBaseAsyncStore<InstanceType<typeof AsyncContainer>>
   >;
   return ExtendedModel(ExportedBaseAsyncStore, modelProps);
 }

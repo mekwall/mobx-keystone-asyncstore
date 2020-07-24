@@ -51,6 +51,7 @@ describe("AsyncStore", () => {
     const TodoStore = createTodoStore("Test2");
     const todoStore = new TodoStore({});
     const container = todoStore.getOne("0");
+    expect(container.$modelId).toBeDefined();
     await when(() => container.isReady);
     const todo = container.value;
     expect(todo).toBeDefined();
