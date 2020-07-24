@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, ObservableMap } from "mobx";
+import { action, observable, reaction, ObservableMap } from "mobx";
 import {
   AnyModel,
   ExtendedModel,
@@ -7,16 +7,13 @@ import {
   ModelClass,
   modelFlow,
   ModelProps,
-  prop,
   _async,
   _Model,
   prop_mapObject,
   modelAction,
-  getParent,
-  tProp,
-  types,
   ModelClassDeclaration,
 } from "mobx-keystone";
+import { createAsyncContainer, IAsyncContainer } from "./AsyncContainer";
 
 // Used internally so that the names of the generated models do not clash
 let id = -1;
@@ -40,99 +37,13 @@ export function AsyncStore<
     fetchOne,
     fetchMany,
     fetchAll,
-    ttl = Infinity,
-    failstateTtl = 10000,
     batchSize = 40,
     throttle = 200,
   } = asyncProps;
 
   id++;
 
-  const AsyncContainerModel = Model({
-    id: prop<string>(),
-    _value: tProp(types.maybe(types.model(ItemModel))),
-  });
-
-  type AsyncContainerDeclaration = ModelClassDeclaration<
-    typeof AsyncContainerModel,
-    IAsyncContainer<InstanceType<AModel>>
-  >;
-
-  @model(`stores/AsyncContainer(${id})`)
-  class AsyncContainer extends AsyncContainerModel
-    implements IAsyncContainer<InstanceType<AModel>> {
-    @observable
-    public isReady = false;
-    @observable
-    public isPending = false;
-    @observable.ref
-    public error: Error | undefined = undefined;
-    @observable
-    public lastModified = Infinity;
-    @observable
-    public expiresAt = Infinity;
-
-    get value(): InstanceType<AModel> | undefined {
-      if (this.shouldFetch) {
-        // Need to check shouldFetch again to avoid race-conditions
-        // This is cheap since it's memoized
-        if (this.shouldFetch) {
-          // Get the store this container is part of
-          const parent = getParent<BaseAsyncStore>(this);
-          if (parent?.addToFetchQueue) {
-            // Add itself to the fetch queue
-            parent.addToFetchQueue(this.id);
-          }
-        }
-      }
-      return undefined || this._value;
-    }
-
-    @computed
-    public get shouldFetch() {
-      return (
-        !this.isPending &&
-        (!this.isReady || this.hasExpired) &&
-        !this.inFailstate
-      );
-    }
-
-    // Do not make computed
-    public get inFailstate() {
-      if (failstateTtl > 0) {
-        return !!this.error && !this.hasExpired;
-      } else {
-        return !!this.error;
-      }
-    }
-
-    // Do not make computed
-    public get hasExpired() {
-      if (this.expiresAt === Infinity) {
-        return false;
-      }
-      return this.expiresAt >= Date.now();
-    }
-
-    @modelAction
-    public setValue(value?: InstanceType<AModel>) {
-      if (ttl) {
-        this.expiresAt = Date.now() + ttl;
-      }
-      this.isReady = true;
-      this._value = value;
-    }
-
-    @modelAction
-    public setPending(pending = true) {
-      this.isPending = pending;
-    }
-
-    @modelAction
-    public setFailstate(error?: Error) {
-      this.error = error;
-    }
-  }
+  const AsyncContainer = createAsyncContainer(ItemModel, asyncProps);
 
   const BaseAsyncStoreModel = Model({
     containers: prop_mapObject<
@@ -325,44 +236,19 @@ export function AsyncStore<
     }
   }
 
-  return ExtendedModel(
-    (BaseAsyncStore as unknown) as ModelClassDeclaration<
-      typeof BaseAsyncStoreModel,
-      IBaseAsyncStore<IAsyncContainer<InstanceType<AModel>>>
-    >,
-    modelProps
-  );
-}
-
-export interface IAsyncContainer<T> {
-  isReady: boolean;
-  isPending: boolean;
-  error: Error | undefined;
-  lastModified: number;
-  expiresAt: number;
-  value: T | undefined;
-  inFailstate: boolean;
-  shouldFetch: boolean;
-  hasExpired: boolean;
-  setPending(pending?: boolean): void;
-  setValue(value?: T): void;
-  setFailstate(error?: Error): void;
+  const ExportedBaseAsyncStore = BaseAsyncStore as ModelClassDeclaration<
+    typeof BaseAsyncStoreModel,
+    IBaseAsyncStore<IAsyncContainer<InstanceType<AModel>>>
+  >;
+  return ExtendedModel(ExportedBaseAsyncStore, modelProps);
 }
 
 export interface IBaseAsyncStore<T> {
   containers: Map<string, T>;
-  fetchQueue: ObservableMap<string>;
   isReady: boolean;
   isPending: boolean;
   error?: Error;
   hasAll: boolean;
-  fetchOne: (id: string) => Promise<void>;
-  fetchMany: (id: string[]) => Promise<void>;
-  fetchAll: (id: string[]) => Promise<void>;
-  spliceFetchQueue(start: number, end: number): void;
-  setReady(): void;
-  setPending(): void;
-  setFailstate(error?: Error): void;
   addToFetchQueue(id: string | string[]): void;
   getOne(id: string): T;
   getMany(id: string[]): T[];
