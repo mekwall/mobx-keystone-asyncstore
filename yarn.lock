@@ -1607,13 +1607,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^26.0.5":
-  version: 26.0.5
-  resolution: "@types/jest@npm:26.0.5"
+"@types/jest@npm:^26.0.7":
+  version: 26.0.7
+  resolution: "@types/jest@npm:26.0.7"
   dependencies:
     jest-diff: ^25.2.1
     pretty-format: ^25.2.1
-  checksum: ffe129cacd0b1472ab8018d1cd5e88cd66f31223d1cc02f2366143e792eba59031432065c37199d7351da5c2b4a6cea21c4a6d30075f925dff3a9f32ba8dc04d
+  checksum: 9c54f6cdcef19a570151aa0b3257219beffa11f4aeae501e5a41211e7ea4edde9acd90a59b38595b09f34e525879b8bd557436d7ac365aa5e8f31ed2de190e29
   languageName: node
   linkType: hard
 
@@ -1633,7 +1633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^14.0.24":
+"@types/node@npm:*":
   version: 14.0.24
   resolution: "@types/node@npm:14.0.24"
   checksum: b10d6b56faeb7fdf2d2527d7aa685b472adaf810612903d667e364eb53a1ffd2ee0e74f25ab135375c7c3f77400cf05a569d7b8d5eee51cbf7b2f748ec86383d
@@ -1644,6 +1644,13 @@ __metadata:
   version: 13.13.14
   resolution: "@types/node@npm:13.13.14"
   checksum: b2fa5163740c067303f41b06aa35bc67e67ea5284de2aceac4c3b4eb8e34c1c9f102ecba82d268f05a4d06fbcc82079160ca577a763cfe31ee38a0a123bd42dd
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^14.0.25":
+  version: 14.0.25
+  resolution: "@types/node@npm:14.0.25"
+  checksum: cb872904d38367d4dfa7904a2c1b3e429546bff8bc5c2e18846768aa7fd4408e06076ee1d9775f4ef629c6aef51c757978491c108069c67346848495fdaee876
   languageName: node
   linkType: hard
 
@@ -3970,13 +3977,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-wsl@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "is-wsl@npm:1.1.0"
-  checksum: 0f15cf5d5ff025afb0ba9cb49fd425b5d533b2af700533d343b7fa9aaca2f6c8242ba1c1a4e30c925522816bf0172fec2ae7cacaae682c91ffa0cd3f88ff1e8e
-  languageName: node
-  linkType: hard
-
 "is-wsl@npm:^2.2.0":
   version: 2.2.0
   resolution: "is-wsl@npm:2.2.0"
@@ -5078,13 +5078,13 @@ __metadata:
     "@babel/plugin-proposal-decorators": ^7.10.5
     "@babel/preset-env": ^7.10.4
     "@babel/preset-typescript": ^7.10.4
-    "@types/jest": ^26.0.5
-    "@types/node": ^14.0.24
+    "@types/jest": ^26.0.7
+    "@types/node": ^14.0.25
     "@yarnpkg/pnpify": ^2.1.0
     jest: ^26.1.0
     mobx: ^5.15.4
     mobx-keystone: ^0.45.0
-    ts-node-dev: ^1.0.0-pre.52
+    ts-node-dev: ^1.0.0-pre.56
     typescript: ^3.9.7
   peerDependencies:
     mobx: ^5.15.4
@@ -5191,19 +5191,6 @@ __metadata:
   version: 1.0.0
   resolution: "node-modules-regexp@npm:1.0.0"
   checksum: 90f928a1dbc3c98d39b3d133f8c910e6bd8e45416f8e15151a31c41550cffe4e3022a39c38c20ae4ceca56b6e63741def4f3a2018080d13f5be245f4b060a9b1
-  languageName: node
-  linkType: hard
-
-"node-notifier@npm:^5.4.0":
-  version: 5.4.3
-  resolution: "node-notifier@npm:5.4.3"
-  dependencies:
-    growly: ^1.3.0
-    is-wsl: ^1.1.0
-    semver: ^5.5.0
-    shellwords: ^0.1.1
-    which: ^1.3.0
-  checksum: 8188c3ea9d9c3cc7840da4109f622eb79e198931d5d6d5d751967f1ef72ea11fc0241d4274a063b9eb3f83f3a4a0cb7dd8557f5fea6391f763afca750e5a66c9
   languageName: node
   linkType: hard
 
@@ -6834,16 +6821,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node-dev@npm:^1.0.0-pre.52":
-  version: 1.0.0-pre.52
-  resolution: "ts-node-dev@npm:1.0.0-pre.52"
+"ts-node-dev@npm:^1.0.0-pre.56":
+  version: 1.0.0-pre.56
+  resolution: "ts-node-dev@npm:1.0.0-pre.56"
   dependencies:
     chokidar: ^3.4.0
     dateformat: ~1.0.4-1.2.3
     dynamic-dedupe: ^0.3.0
     minimist: ^1.2.5
     mkdirp: ^1.0.4
-    node-notifier: ^5.4.0
     resolve: ^1.0.0
     rimraf: ^2.6.1
     source-map-support: ^0.5.12
@@ -6851,11 +6837,15 @@ __metadata:
     ts-node: ^8.10.2
     tsconfig: ^7.0.0
   peerDependencies:
+    node-notifier: "*"
     typescript: "*"
+  peerDependenciesMeta:
+    node-notifier:
+      optional: true
   bin:
     ts-node-dev: bin/ts-node-dev
     tsnd: bin/ts-node-dev
-  checksum: c908a537b80e77ca61cdec865b7b3d027d6b839cea3b126658ac670975b416153bcdfb5df3b5fe9a74096314a6ff38295aa23896f58609614c2081238d2bda2f
+  checksum: e5ac54e542ac051e82ab692e8707c77de8372c2da5ceaaaa8748fc1a68b22564b8147cf3d5f5a31373f778db1032814cc0fc8ec4213306abe867e02f9f4191d1
   languageName: node
   linkType: hard
 
@@ -7216,7 +7206,7 @@ typescript@^3.9.7:
   languageName: node
   linkType: hard
 
-"which@npm:^1.2.9, which@npm:^1.3.0":
+"which@npm:^1.2.9":
   version: 1.3.1
   resolution: "which@npm:1.3.1"
   dependencies:
