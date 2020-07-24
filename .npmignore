@@ -8,5 +8,6 @@
 .pnp.js
 .yarnrc.yml
 src
+coverage
 babel.config.js
 tsconfig.json
