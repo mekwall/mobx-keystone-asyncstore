@@ -239,6 +239,15 @@ export function AsyncStore<
       }
       return this.values;
     }
+
+    @modelAction
+    public createAsyncContainer(id: string, add = false) {
+      const ct = new AsyncContainer({ id });
+      if (add) {
+        this.containers.set(id, ct);
+      }
+      return ct;
+    }
   }
 
   const ExportedBaseAsyncStore = BaseAsyncStore as ModelClassDeclaration<
@@ -258,4 +267,5 @@ export interface IBaseAsyncStore<T> {
   getOne(id: string): T;
   getMany(id: string[]): T[];
   getAll(): T[];
+  createAsyncContainer(id: string, add?: boolean): T;
 }
