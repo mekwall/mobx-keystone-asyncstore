@@ -1,4 +1,4 @@
-import { action, observable, reaction } from "mobx";
+import { action, observable, reaction, computed } from "mobx";
 import {
   AnyModel,
   ExtendedModel,
@@ -62,6 +62,11 @@ export function AsyncStore<
     public error?: Error;
     @observable
     public hasAll = false;
+
+    @computed
+    public get values(): InstanceType<typeof AsyncContainer>[] {
+      return [...this.containers.values()];
+    }
 
     public onInit() {
       const dispose = reaction(
@@ -232,7 +237,7 @@ export function AsyncStore<
       if (!this.hasAll && !this.fetchQueue.includes("*")) {
         this.addToFetchQueue("*");
       }
-      return Object.values(this.containers).map((c) => c);
+      return this.values;
     }
   }
 
