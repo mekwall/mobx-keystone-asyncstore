@@ -1,6 +1,6 @@
 {
   "name": "mobx-keystone-asyncstore",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "author": "Marcus Ekwall <marcus.ekwall@gmail.com>",
   "license": "MIT",
   "main": "src/index.ts",
