@@ -90,4 +90,15 @@ describe("AsyncStore", () => {
       expect(todo?.task).toBe("Do it " + i);
     });
   });
+
+  it("should create container", async () => {
+    const TodoStore = createTodoStore("Test5");
+    const todoStore = new TodoStore({});
+    const ct1 = todoStore.createAsyncContainer("test1", true);
+    const ct2 = todoStore.createAsyncContainer("test2", false);
+    expect(ct1).toBeDefined();
+    expect(ct2).toBeDefined();
+    expect(todoStore.containers.has("test1")).toBe(true);
+    expect(todoStore.containers.has("test2")).toBe(false);
+  });
 });
