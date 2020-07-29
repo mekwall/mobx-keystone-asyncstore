@@ -55,7 +55,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],
       [
         "@types/node",
-        "npm:14.0.25"
+        "npm:14.0.27"
       ],
       [
         "@yarnpkg/pnpify",
@@ -95,7 +95,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
             ["@babel/preset-typescript", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
             ["@types/jest", "npm:26.0.7"],
-            ["@types/node", "npm:14.0.25"],
+            ["@types/node", "npm:14.0.27"],
             ["@yarnpkg/pnpify", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:2.1.0"],
             ["jest", "npm:26.1.0"],
             ["mobx", "npm:5.15.4"],
@@ -2020,10 +2020,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:14.0.25", {
-          "packageLocation": "./.yarn/cache/@types-node-npm-14.0.25-33e5daea36-cb872904d3.zip/node_modules/@types/node/",
+        ["npm:14.0.27", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-14.0.27-d33df6dc81-54ecf408eb.zip/node_modules/@types/node/",
           "packageDependencies": [
-            ["@types/node", "npm:14.0.25"]
+            ["@types/node", "npm:14.0.27"]
           ],
           "linkType": "HARD",
         }]
@@ -5850,7 +5850,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
             ["@babel/preset-typescript", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
             ["@types/jest", "npm:26.0.7"],
-            ["@types/node", "npm:14.0.25"],
+            ["@types/node", "npm:14.0.27"],
             ["@yarnpkg/pnpify", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:2.1.0"],
             ["jest", "npm:26.1.0"],
             ["mobx", "npm:5.15.4"],
