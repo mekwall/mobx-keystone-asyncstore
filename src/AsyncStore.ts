@@ -238,8 +238,8 @@ export function AsyncStore<
     }
 
     @modelAction
-    public getAll(): InstanceType<typeof AsyncContainer>[] {
-      if (!this.hasAll && !this.fetchQueue.includes("*")) {
+    public getAll(force = false): InstanceType<typeof AsyncContainer>[] {
+      if (force || (!this.hasAll && !this.fetchQueue.includes("*"))) {
         this.addToFetchQueue("*");
       }
       return this.values;
