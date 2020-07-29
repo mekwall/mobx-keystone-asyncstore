@@ -271,6 +271,6 @@ export interface IBaseAsyncStore<T> {
   addToFetchQueue(id: string | string[]): void;
   getOne(id: string): T;
   getMany(id: string[]): T[];
-  getAll(): T[];
+  getAll(force?: boolean): T[];
   createAsyncContainer(id: string, add?: boolean): T;
 }
