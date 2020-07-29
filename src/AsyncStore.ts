@@ -71,34 +71,38 @@ export function AsyncStore<
     public onInit() {
       const dispose = reaction(
         () => !this.isPending && this.fetchQueue.length > 0,
-        async (shouldFetch) => {
-          if (shouldFetch) {
-            // Prioratize fetching all
-            const fetchAllIndex = this.fetchQueue.indexOf("*");
-            if (fetchAllIndex !== -1) {
-              this.spliceFetchQueue(fetchAllIndex, 1);
-              await this.fetchAll();
-            } else {
-              const idsToFetch = this.spliceFetchQueue(0, batchSize);
-              if (idsToFetch.length === 1) {
-                await this.fetchOne(idsToFetch[0]);
-              } else {
-                await this.fetchMany(idsToFetch);
-              }
-            }
-          }
-        },
+        this.fetchQueueExecutor,
         {
           fireImmediately: true,
-          scheduler: (run) => {
-            return setTimeout(run, throttle);
-          },
+          scheduler: this.fetchQueueScheduler,
         }
       );
 
       return () => {
         dispose();
       };
+    }
+
+    private fetchQueueExecutor = async (shouldFetch: boolean) => {
+      if (shouldFetch) {
+        // Prioratize fetching all
+        const fetchAllIndex = this.fetchQueue.indexOf("*");
+        if (fetchAllIndex !== -1) {
+          this.spliceFetchQueue(fetchAllIndex, 1);
+          await this.fetchAll();
+        } else {
+          const idsToFetch = this.spliceFetchQueue(0, batchSize);
+          if (idsToFetch.length === 1) {
+            await this.fetchOne(idsToFetch[0]);
+          } else {
+            await this.fetchMany(idsToFetch);
+          }
+        }
+      }
+    };
+
+    private fetchQueueScheduler(run: () => void) {
+      setTimeout(run, throttle);
     }
 
     @modelFlow
