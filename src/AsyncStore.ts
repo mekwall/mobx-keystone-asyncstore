@@ -78,6 +78,7 @@ export function AsyncStore<
         }
       );
 
+      /* istanbul ignore next */
       return () => {
         dispose();
       };
@@ -229,15 +230,21 @@ export function AsyncStore<
 
     @modelAction
     public getMany(ids: string[]): InstanceType<typeof AsyncContainer>[] {
+      const idsToFetch: string[] = [];
       const cts = ids.map((id) => {
         let ct = this.containers.get(id);
         if (!ct) {
           ct = new AsyncContainer({ id });
           this.containers.set(id, ct);
         }
+        if (ct.shouldFetch) {
+          idsToFetch.push(id);
+        }
         return ct;
       });
-      this.addToFetchQueue(ids);
+      if (idsToFetch.length > 0) {
+        this.addToFetchQueue(idsToFetch);
+      }
       return cts;
     }
 
