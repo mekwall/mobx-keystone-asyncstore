@@ -101,4 +101,27 @@ describe("AsyncStore", () => {
     expect(todoStore.containers.has("test1")).toBe(true);
     expect(todoStore.containers.has("test2")).toBe(false);
   });
+
+  it("should not fetch when we already have", async () => {
+    const TodoStore = createTodoStore("Test6");
+    const todoStore = new TodoStore({});
+    const addToFetchQueueSpy = jest.spyOn(todoStore, "addToFetchQueue");
+    const spliceQueueSpy = jest.spyOn(todoStore, "spliceFetchQueue");
+    const fetchAllSpy = jest.spyOn(todoStore, "fetchAll");
+    const fetchOneSpy = jest.spyOn(todoStore, "fetchOne");
+    todoStore.getAll();
+    await when(() => !todoStore.isPending && todoStore.isReady);
+    const cts = todoStore.getAll();
+    const ct = todoStore.getOne("0");
+    const cts2 = todoStore.getMany(["1", "2"]);
+    await when(() => ct.isReady);
+    expect(todoStore.containers.size).toBe(3);
+    expect(cts[0]).toBe(ct);
+    expect(cts2[0]).toBe(cts[1]);
+    expect(cts2[1]).toBe(cts[2]);
+    expect(fetchAllSpy).toBeCalledTimes(1);
+    expect(spliceQueueSpy).toBeCalledTimes(1);
+    expect(addToFetchQueueSpy).toBeCalledTimes(1);
+    expect(fetchOneSpy).toBeCalledTimes(0);
+  });
 });
