@@ -88,7 +88,12 @@ export function AsyncStore<
             }
           }
         },
-        { delay: throttle, fireImmediately: true }
+        {
+          fireImmediately: true,
+          scheduler: (run) => {
+            return setTimeout(run, throttle);
+          },
+        }
       );
 
       return () => {
