@@ -7,8 +7,9 @@
 .gitignore
 .pnp.js
 .yarnrc.yml
-src
-coverage
-babel.config.js
+.eslintrc.js
+/src
+/coverage
+*.config.js
 tsconfig.json
 tsconfig.*.json
