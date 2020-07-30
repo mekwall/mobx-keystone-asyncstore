@@ -297,6 +297,7 @@ export function AsyncStore<
 
 export interface IBaseAsyncStore<T> {
   containers: Map<string, T>;
+  values: T[];
   isReady: boolean;
   isPending: boolean;
   error?: Error;
