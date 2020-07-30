@@ -9,11 +9,9 @@ jobs:
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install
-      - uses: mattallty/jest-github-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: borales/actions-yarn@v2.0.0
         with:
-          test-command: "yarn test --coverage"
+          cmd: test --coverage
       - uses: codecov/codecov-action@v1
         with:
           directory: ./coverage
