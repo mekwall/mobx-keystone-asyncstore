@@ -77,7 +77,7 @@ class TodoStore extends AsyncStore(
     // Add task to container value
     container.setValue(task);
     // Add container to store
-    this.containers.set(task.id, task);
+    this.containers.set(task.id, container);
     // Set the store as dirty
     this.setDirty();
     // Let's return the container so it may be used
