@@ -1,6 +1,6 @@
 # mobx-keystone-asyncstore
 
-_An opinionated asynchronous store and container implementation for mobx-keystone._
+_An opinionated asynchronous store and container implementation for [mobx-keystone](https://mobx-keystone.js.org/)._
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/mekwall/mobx-keystone-asyncstore/blob/master/LICENSE)
 
