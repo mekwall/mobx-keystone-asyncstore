@@ -8,6 +8,7 @@
 .pnp.js
 .yarnrc.yml
 .eslintrc.js
+.eslintignore
 /src
 /coverage
 *.config.js
