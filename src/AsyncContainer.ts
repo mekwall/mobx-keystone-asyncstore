@@ -14,20 +14,18 @@ import {
 import { AsyncStoreOptions, IBaseAsyncStore } from "./AsyncStore";
 import { observable, computed } from "mobx";
 
-let id = -1;
-
 export interface AsyncContainerOptions<T> extends AsyncStoreOptions<T> {
   name: string;
 }
 
+// We cannot explicitly define a return type here
+// since it's generated
+// eslint-disable-next-line
 export function createAsyncContainer<
   AModel extends ModelClass<AnyModel>,
   AProps extends AsyncContainerOptions<InstanceType<AModel>>
 >(ItemModel: AModel, asyncProps: AProps) {
   const { name, ttl = Infinity, failstateTtl = 5000 } = asyncProps;
-
-  id++;
-
   const AsyncContainerModel = Model({
     id: prop<string>(),
     _value: tProp(types.maybe(types.model(ItemModel))),
@@ -63,7 +61,7 @@ export function createAsyncContainer<
           }
         }
       }
-      return undefined || this._value;
+      return this._value;
     }
 
     @computed

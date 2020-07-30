@@ -9,12 +9,11 @@ import {
   modelFlow,
   ModelProps,
   _async,
-  _Model,
   prop_mapObject,
   modelAction,
   ModelClassDeclaration,
 } from "mobx-keystone";
-import { createAsyncContainer, IAsyncContainer } from "./AsyncContainer";
+import { createAsyncContainer } from "./AsyncContainer";
 
 // Used internally so that the names of the generated models do not clash
 let id = -1;
@@ -30,6 +29,9 @@ export interface AsyncStoreOptions<T> {
   throttle?: number;
 }
 
+// We cannot explicitly define a return type here
+// since it's generated
+// eslint-disable-next-line
 export function AsyncStore<
   AModel extends ModelClass<AnyModel>,
   AProps extends AsyncStoreOptions<InstanceType<AModel>>,
@@ -124,14 +126,16 @@ export function AsyncStore<
         throw Error("Not implemented");
       }
       this.setPending();
-      const ct = this.containers.get(id)!;
+      const ct = this.containers.get(id);
       try {
         const item: InstanceType<AModel> | undefined = fetchOne
           ? yield fetchOne.call(this, id)
-          : yield fetchMany!.call(this, [id]);
-        ct.setValue(item);
+          : // We do know that we have fetchMany here
+            // eslint-disable-next-line
+            yield fetchMany!.call(this, [id]);
+        ct?.setValue(item);
       } catch (e) {
-        ct.setFailstate(e);
+        ct?.setFailstate(e);
       }
       this.setReady();
     });

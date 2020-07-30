@@ -5,7 +5,7 @@ import { AsyncStore, AsyncStoreOptions } from "../AsyncStore";
 
 function createTodoStore(
   name: string,
-  opts: Partial<AsyncStoreOptions<any>> = {}
+  opts: Partial<AsyncStoreOptions<unknown>> = {}
 ) {
   @model(name + "TodoModel")
   class TodoModel extends Model({
