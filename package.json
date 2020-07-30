@@ -8,7 +8,6 @@
   "publishConfig": {
     "main": "dist/index.js"
   },
-  "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/mekwall/mobx-keystone-asyncstore.git"
