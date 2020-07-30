@@ -2,8 +2,8 @@
 
 _An opinionated asynchronous store and container implementation for [mobx-keystone](https://mobx-keystone.js.org/)._
 
-[![npm](https://img.shields.io/npm/v/mobx-keystone-asyncstore.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/mobx-keystone)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/mekwall/mobx-keystone-asyncstore/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/mobx-keystone-asyncstore.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/mobx-keystone-asyncstore)
 ![types](https://img.shields.io/npm/types/mobx-keystone-asyncstore.svg?style=flat-square&logo=typescript)
 [![build](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fmekwall%2Fmobx-keystone-asyncstore%2Fbadge%3Fref%3Dmaster&label=build&style=flat-square)](https://actions-badge.atrox.dev/mekwall/mobx-keystone-asyncstore/goto?ref=master)
 [![coverage](https://img.shields.io/codecov/c/github/mekwall/mobx-keystone-asyncstore?style=flat-square)](https://codecov.io/github/mekwall/mobx-keystone-asyncstore?branch=master)
