@@ -2,7 +2,9 @@
 
 _An opinionated asynchronous store and container implementation for [mobx-keystone](https://mobx-keystone.js.org/)._
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/mekwall/mobx-keystone-asyncstore/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/mobx-keystone-asyncstore.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/mobx-keystone)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/mekwall/mobx-keystone-asyncstore/blob/master/LICENSE)
+![types](https://img.shields.io/npm/types/mobx-keystone-asyncstore.svg?style=flat-square&logo=typescript)
 
 > ⚠️ This library is under development and not yet considered stable. Use with caution as breaking changes to the API may be introduced until reaching v1.
 
@@ -10,7 +12,7 @@ _An opinionated asynchronous store and container implementation for [mobx-keysto
 
 One of the most common challenges when implementing a store solution is how to handle asynchronous data sets. mobx-keystone-asyncstore aims to simplify this by allowing you to create powerful asynchronous stores with just a few lines of code. An mobx-keystone-asyncstore implements the most common fetch patterns and support fetch queues, fail states and time to live out of the box.
 
-It's as simple as this:
+Let's look at a simple implementation of a TodoStore:
 
 ```ts
 import axios from "axios";
@@ -21,6 +23,7 @@ import { AsyncStore } from "mobx-keystone-asyncstore";
 // Create main model
 @model("models/TodoItem")
 class TodoItem extends Model({
+  id: tProps(types.string),
   task: tProps(types.string),
   done: tProps(types.boolean, false)
 }){
@@ -52,12 +55,36 @@ class TodoStore extends AsyncStore(TodoItem, {
   },
 }, {
   // Add additional model props for the store
-  extraModelProp: tProp(types.boolean, true)
+  isDirty: tProp(types.boolean, true)
 }) {
+  @modelAction
+  public setDirty(isDirty = true) {
+    this.isDirty = isDirty;
+  }
+
   // Add additional methods for the store
   @modelAction
-  public toggleExtraProp() {
-    this.extraModelProp = !!this.extraModelProp;
+  public addTodo(task: TodoItem) {
+    // Create container that will contain our task
+    const container = this.createAsyncContainer(task.id);
+    // Add task to container value
+    container.setValue(task);
+    // Add container to store
+    this.containers.set(task.id, task);
+    // Set the store as dirty
+    this.setDirty();
+    // Let's return the container so it may be used
+    return container;
+  }
+
+  // Method to save all our todos
+  async saveToDataBase() {
+    if (this.isDirty) {
+      const res = await axios.post(`/todos`, this.values);
+      if (res.status === 200) {
+        this.setDirty(false);
+      }
+    }
   }
 }
 
@@ -65,7 +92,7 @@ class TodoStore extends AsyncStore(TodoItem, {
 const todoStore = new TodoStore({});
 
 // Ask the store to return container with id 'foo'
-const container = todoStore.get('foo');
+const container = todoStore.get("foo");
 
 // Wait for the container to be ready to be consumed
 when(
@@ -76,4 +103,15 @@ when(
     todo.toggleDone();
   }
 );
+
+// Add a new todo to the store
+todoStore.addTodo(
+  new TodoItem({
+    id: "bar",
+    task: "Do this thing as well"
+  })
+);
+
+// Use our custom save method
+todoStore.saveToDb();
 ```
