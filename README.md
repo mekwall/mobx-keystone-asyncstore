@@ -20,46 +20,50 @@ Let's look at a simple implementation of a TodoStore:
 ```ts
 import axios from "axios";
 import { when } from "mobx";
-import { model, modelAction, Model, tProps } from "mobx-keystone";
+import { model, modelAction, Model, tProp, types } from "mobx-keystone";
 import { AsyncStore } from "mobx-keystone-asyncstore";
 
 // Create main model
 @model("models/TodoItem")
 class TodoItem extends Model({
-  id: tProps(types.string),
-  task: tProps(types.string),
-  done: tProps(types.boolean, false)
-}){
+  id: tProp(types.string),
+  task: tProp(types.string),
+  done: tProp(types.boolean, false),
+}) {
   @modelAction
   public toggleDone() {
     this.done = !!this.done;
   }
-};
+}
 
 // Create async store
 const storeName = "stores/TodoStore";
 @model(storeName)
-class TodoStore extends AsyncStore(TodoItem, {
-  { name: storeName },
-  // Logic to fetch one item
-  async fetchOne(id: string) {
-    const res = await axios.get(`/todos/${id}`);
-    return new TodoItem(res.data);
+class TodoStore extends AsyncStore(
+  TodoItem,
+  {
+    name: storeName,
+    // Logic to fetch one item
+    async fetchOne(id: string) {
+      const res = await axios.get(`/todos/${id}`);
+      return new TodoItem(res.data);
+    },
+    // Logic to fetch many items
+    async fetchMany(ids: string[]) {
+      const res = await axios.get(`/todos`, { ids });
+      return res.data.response.map((d: any) => new TodoItem(d));
+    },
+    // Logic to fetch all items
+    async fetchAll() {
+      const res = await axios.get(`/todos/all`);
+      return res.data.response.map((d: any) => new TodoItem(d));
+    },
   },
-  // Logic to fetch many items
-  async fetchMany(ids: string[]) {
-    const res = await axios.get(`/todos`, { ids });
-    return res.data.response.map((d) => new TodoItem(d));
-  },
-  // Logic to fetch all items
-  async fetchAll() {
-    const res = await axios.get(`/todos/all`);
-    return res.data.response.map((d) => new TodoItem(d));
-  },
-}, {
-  // Add additional model props for the store
-  isDirty: tProp(types.boolean, true)
-}) {
+  {
+    // Add additional model props for the store
+    isDirty: tProp(types.boolean, true),
+  }
+) {
   @modelAction
   public setDirty(isDirty = true) {
     this.isDirty = isDirty;
@@ -81,7 +85,7 @@ class TodoStore extends AsyncStore(TodoItem, {
   }
 
   // Method to save all our todos
-  async saveToDataBase() {
+  async saveToDb() {
     if (this.isDirty) {
       const res = await axios.post(`/todos`, this.values);
       if (res.status === 200) {
@@ -95,7 +99,7 @@ class TodoStore extends AsyncStore(TodoItem, {
 const todoStore = new TodoStore({});
 
 // Ask the store to return container with id 'foo'
-const container = todoStore.get("foo");
+const container = todoStore.getOne("foo");
 
 // Wait for the container to be ready to be consumed
 when(
@@ -111,7 +115,7 @@ when(
 todoStore.addTodo(
   new TodoItem({
     id: "bar",
-    task: "Do this thing as well"
+    task: "Do this thing as well",
   })
 );
 
