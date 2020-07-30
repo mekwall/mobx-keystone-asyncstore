@@ -1,3 +1,4 @@
+import createDebug from "debug";
 import {
   Model,
   prop,
@@ -15,11 +16,15 @@ import { observable, computed } from "mobx";
 
 let id = -1;
 
+export interface AsyncContainerOptions<T> extends AsyncStoreOptions<T> {
+  name: string;
+}
+
 export function createAsyncContainer<
   AModel extends ModelClass<AnyModel>,
-  AProps extends AsyncStoreOptions<InstanceType<AModel>>
+  AProps extends AsyncContainerOptions<InstanceType<AModel>>
 >(ItemModel: AModel, asyncProps: AProps) {
-  const { ttl = Infinity, failstateTtl = 5000 } = asyncProps;
+  const { name, ttl = Infinity, failstateTtl = 5000 } = asyncProps;
 
   id++;
 
@@ -28,7 +33,9 @@ export function createAsyncContainer<
     _value: tProp(types.maybe(types.model(ItemModel))),
   });
 
-  @model(`stores/AsyncContainer(${id})`)
+  const debug = createDebug(`mobx-keystone:${name}Container`);
+
+  @model(`asyncStores/containers/${name})`)
   class AsyncContainer extends AsyncContainerModel
     implements IAsyncContainer<InstanceType<AModel>> {
     @observable
@@ -49,6 +56,7 @@ export function createAsyncContainer<
         if (this.shouldFetch) {
           // Get the store this container is part of
           const parent = getParent<IBaseAsyncStore<InstanceType<AModel>>>(this);
+          debug("parent.addToFetchQueue()", parent);
           if (parent?.addToFetchQueue) {
             // Add itself to the fetch queue
             parent.addToFetchQueue(this.id);
@@ -86,6 +94,7 @@ export function createAsyncContainer<
 
     @modelAction
     public setValue(value?: InstanceType<AModel>) {
+      debug("setValue()", value);
       if (ttl) {
         this.expiresAt = Date.now() + ttl;
       }
@@ -94,12 +103,14 @@ export function createAsyncContainer<
     }
 
     @modelAction
-    public setPending(pending = true) {
-      this.isPending = pending;
+    public setPending(isPending = true) {
+      debug("setPending()", isPending);
+      this.isPending = isPending;
     }
 
     @modelAction
     public setFailstate(error?: Error) {
+      debug("setFailstate()", error);
       this.error = error;
     }
   }

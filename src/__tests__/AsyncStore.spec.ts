@@ -24,9 +24,9 @@ function createTodoStore(
     new TodoModel({ $modelId: "2", task: "Do it 2" }),
   ];
 
-  @model(name + "BaseStore")
+  @model(name + "TodoStore")
   class TodoStore extends AsyncStore(TodoModel, {
-    ...opts,
+    ...{ name: name + "BaseStore", ...opts },
     async fetchAll() {
       return todoList;
     },
@@ -42,13 +42,13 @@ function createTodoStore(
 
 describe("AsyncStore", () => {
   it("should create AsyncStore", () => {
-    const TodoStore = createTodoStore("Test1");
+    const TodoStore = createTodoStore("stores/Test1");
     const todoStore = new TodoStore({});
     expect(todoStore).toBeInstanceOf(TodoStore);
   });
 
   it("should fetch one item", async () => {
-    const TodoStore = createTodoStore("Test2");
+    const TodoStore = createTodoStore("stores/Test2");
     const todoStore = new TodoStore({});
     const container = todoStore.getOne("0");
     expect(container.$modelId).toBeDefined();
@@ -60,7 +60,7 @@ describe("AsyncStore", () => {
   });
 
   it("should fetch many items", async () => {
-    const TodoStore = createTodoStore("Test3");
+    const TodoStore = createTodoStore("stores/Test3");
     const todoStore = new TodoStore({});
     const containers = todoStore.getMany(["0", "1", "2"]);
     expect(todoStore.isReady).toBe(false);
@@ -77,7 +77,7 @@ describe("AsyncStore", () => {
   });
 
   it("should fetch all items", async () => {
-    const TodoStore = createTodoStore("Test4");
+    const TodoStore = createTodoStore("stores/Test4");
     const todoStore = new TodoStore({});
     todoStore.getAll();
     expect(todoStore.isReady).toBe(false);
@@ -92,7 +92,7 @@ describe("AsyncStore", () => {
   });
 
   it("should create container", async () => {
-    const TodoStore = createTodoStore("Test5");
+    const TodoStore = createTodoStore("stores/Test5");
     const todoStore = new TodoStore({});
     const ct1 = todoStore.createAsyncContainer("test1", true);
     const ct2 = todoStore.createAsyncContainer("test2", false);
@@ -103,7 +103,7 @@ describe("AsyncStore", () => {
   });
 
   it("should not fetch when we already have", async () => {
-    const TodoStore = createTodoStore("Test6");
+    const TodoStore = createTodoStore("stores/Test6");
     const todoStore = new TodoStore({});
     const addToFetchQueueSpy = jest.spyOn(todoStore, "addToFetchQueue");
     const spliceQueueSpy = jest.spyOn(todoStore, "spliceFetchQueue");

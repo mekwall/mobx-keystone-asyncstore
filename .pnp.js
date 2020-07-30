@@ -50,6 +50,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"
       ],
       [
+        "@types/debug",
+        "npm:4.1.5"
+      ],
+      [
         "@types/jest",
         "npm:26.0.7"
       ],
@@ -60,6 +64,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       [
         "@yarnpkg/pnpify",
         "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:2.1.0"
+      ],
+      [
+        "cross-env",
+        "npm:7.0.2"
+      ],
+      [
+        "debug",
+        "virtual:057ce0190c0b5c639c735618cf777968152e76191d1fdd34a8b533cbc74e5369d962ec2680477d36b44fde211a7d0b4078bbf3a0ba3bb48562139414e8e24267#npm:4.2.0"
       ],
       [
         "jest",
@@ -94,9 +106,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-decorators", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.5"],
             ["@babel/preset-env", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
             ["@babel/preset-typescript", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
+            ["@types/debug", "npm:4.1.5"],
             ["@types/jest", "npm:26.0.7"],
             ["@types/node", "npm:14.0.27"],
             ["@yarnpkg/pnpify", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:2.1.0"],
+            ["cross-env", "npm:7.0.2"],
+            ["debug", "virtual:057ce0190c0b5c639c735618cf777968152e76191d1fdd34a8b533cbc74e5369d962ec2680477d36b44fde211a7d0b4078bbf3a0ba3bb48562139414e8e24267#npm:4.2.0"],
             ["jest", "npm:26.1.0"],
             ["mobx", "npm:5.15.4"],
             ["mobx-keystone", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:0.45.0"],
@@ -1906,6 +1921,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/debug", [
+        ["npm:4.1.5", {
+          "packageLocation": "./.yarn/cache/@types-debug-npm-4.1.5-3464d6c971-416ad24bc5.zip/node_modules/@types/debug/",
+          "packageDependencies": [
+            ["@types/debug", "npm:4.1.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/emscripten", [
         ["npm:1.39.4", {
           "packageLocation": "./.yarn/cache/@types-emscripten-npm-1.39.4-4d03380faa-b848421e25.zip/node_modules/@types/emscripten/",
@@ -3149,6 +3173,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/core-util-is-npm-1.0.2-9fc2b94dc3-089015ee3c.zip/node_modules/core-util-is/",
           "packageDependencies": [
             ["core-util-is", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["cross-env", [
+        ["npm:7.0.2", {
+          "packageLocation": "./.yarn/cache/cross-env-npm-7.0.2-1e9c9fdbca-624d638db3.zip/node_modules/cross-env/",
+          "packageDependencies": [
+            ["cross-env", "npm:7.0.2"],
+            ["cross-spawn", "npm:7.0.3"]
           ],
           "linkType": "HARD",
         }]
@@ -5849,9 +5883,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-decorators", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.5"],
             ["@babel/preset-env", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
             ["@babel/preset-typescript", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:7.10.4"],
+            ["@types/debug", "npm:4.1.5"],
             ["@types/jest", "npm:26.0.7"],
             ["@types/node", "npm:14.0.27"],
             ["@yarnpkg/pnpify", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:2.1.0"],
+            ["cross-env", "npm:7.0.2"],
+            ["debug", "virtual:057ce0190c0b5c639c735618cf777968152e76191d1fdd34a8b533cbc74e5369d962ec2680477d36b44fde211a7d0b4078bbf3a0ba3bb48562139414e8e24267#npm:4.2.0"],
             ["jest", "npm:26.1.0"],
             ["mobx", "npm:5.15.4"],
             ["mobx-keystone", "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:0.45.0"],

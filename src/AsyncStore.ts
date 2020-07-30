@@ -1,3 +1,4 @@
+import createDebug from "debug";
 import { action, observable, reaction, computed } from "mobx";
 import {
   AnyModel,
@@ -19,6 +20,7 @@ import { createAsyncContainer, IAsyncContainer } from "./AsyncContainer";
 let id = -1;
 
 export interface AsyncStoreOptions<T> {
+  name?: string;
   fetchOne?(id: string): Promise<T | undefined>;
   fetchMany?(ids: string[]): Promise<Array<T>>;
   fetchAll?(): Promise<Array<T>>;
@@ -33,7 +35,9 @@ export function AsyncStore<
   AProps extends AsyncStoreOptions<InstanceType<AModel>>,
   TProps extends ModelProps
 >(ItemModel: AModel, asyncProps: AProps, modelProps: TProps = {} as TProps) {
+  id++;
   const {
+    name = `AsyncStore(${id})`,
     fetchOne,
     fetchMany,
     fetchAll,
@@ -41,9 +45,10 @@ export function AsyncStore<
     throttle = 200,
   } = asyncProps;
 
-  id++;
-
-  const AsyncContainer = createAsyncContainer(ItemModel, asyncProps);
+  const AsyncContainer = createAsyncContainer(ItemModel, {
+    ...asyncProps,
+    name,
+  });
 
   const BaseAsyncStoreModel = Model({
     containers: prop_mapObject<
@@ -51,7 +56,9 @@ export function AsyncStore<
     >(() => new Map()),
   });
 
-  @model(`stores/BaseAsyncStore(${id})`)
+  const debug = createDebug(`mobx-keystone:${name}`);
+
+  @model(`asyncStores/Base${name}`)
   class BaseAsyncStore extends BaseAsyncStoreModel {
     private fetchQueue = observable.array<string>([]);
     @observable
@@ -69,6 +76,7 @@ export function AsyncStore<
     }
 
     public onInit() {
+      debug("onInit()");
       const dispose = reaction(
         () => !this.isPending && this.fetchQueue.length > 0,
         this.fetchQueueExecutor,
@@ -85,6 +93,7 @@ export function AsyncStore<
     }
 
     private fetchQueueExecutor = async (shouldFetch: boolean) => {
+      debug("fetchQueueExecutor()", shouldFetch);
       if (shouldFetch) {
         // Prioratize fetching all
         const fetchAllIndex = this.fetchQueue.indexOf("*");
@@ -189,28 +198,33 @@ export function AsyncStore<
 
     @action
     private spliceFetchQueue(start: number, end: number) {
+      debug(`spliceFetchQueue()`, start, end);
       return this.fetchQueue.splice(start, end);
     }
 
     @action
     private setReady(): void {
+      debug(`setReady()`);
       this.isPending = false;
       this.isReady = true;
     }
 
     @action
     private setPending(): void {
+      debug(`setPending()`);
       this.isPending = true;
     }
 
     @action
     private setFailstate(error?: Error): void {
+      debug(`setFailstate()`);
       this.error = error;
     }
 
     // Usually only used by AsyncContainer to add itself to
     // the fetch queue
     public addToFetchQueue(id: string | string[]): void {
+      debug(`addToFetchQueue()`, id);
       if (Array.isArray(id)) {
         this.fetchQueue.push(...id);
       } else {
@@ -220,6 +234,7 @@ export function AsyncStore<
 
     @modelAction
     public getOne(id: string): InstanceType<typeof AsyncContainer> {
+      debug(`getOne()`, id);
       const ct = this.containers.get(id) || new AsyncContainer({ id });
       this.containers.set(id, ct);
       if (ct.shouldFetch && !this.fetchQueue.includes(id)) {
@@ -230,6 +245,7 @@ export function AsyncStore<
 
     @modelAction
     public getMany(ids: string[]): InstanceType<typeof AsyncContainer>[] {
+      debug(`getMany()`, ids);
       const idsToFetch: string[] = [];
       const cts = ids.map((id) => {
         let ct = this.containers.get(id);
@@ -250,6 +266,7 @@ export function AsyncStore<
 
     @modelAction
     public getAll(force = false): InstanceType<typeof AsyncContainer>[] {
+      debug(`getAll()`, force);
       if (force || (!this.hasAll && !this.fetchQueue.includes("*"))) {
         this.addToFetchQueue("*");
       }
@@ -258,6 +275,7 @@ export function AsyncStore<
 
     @modelAction
     public createAsyncContainer(id: string, add = false) {
+      debug(`createAsyncContainer()`, id, add);
       const ct = new AsyncContainer({ id });
       if (add) {
         this.containers.set(id, ct);
