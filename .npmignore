@@ -14,3 +14,4 @@
 *.config.js
 tsconfig.json
 tsconfig.*.json
+lgtm.yml
