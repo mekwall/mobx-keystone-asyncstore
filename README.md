@@ -7,7 +7,7 @@ _An opinionated asynchronous store and container implementation for [mobx-keysto
 ![types](https://img.shields.io/npm/types/mobx-keystone-asyncstore.svg?style=flat-square&logo=typescript)
 [![build](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fmekwall%2Fmobx-keystone-asyncstore%2Fbadge%3Fref%3Dmaster&label=build&style=flat-square)](https://actions-badge.atrox.dev/mekwall/mobx-keystone-asyncstore/goto?ref=master)
 [![coverage](https://img.shields.io/codecov/c/github/mekwall/mobx-keystone-asyncstore?style=flat-square)](https://codecov.io/github/mekwall/mobx-keystone-asyncstore?branch=master)
-[![quality](https://img.shields.io/lgtm/grade/javascript/github/mekwall/mobx-keystone-asyncstore?style=flat-square])](https://lgtm.com/projects/g/mekwall/mobx-keystone-asyncstore/?mode=list)
+[![quality](https://img.shields.io/lgtm/grade/javascript/github/mekwall/mobx-keystone-asyncstore?style=flat-square)](https://lgtm.com/projects/g/mekwall/mobx-keystone-asyncstore/?mode=list)
 
 > ⚠️**WARNING**: This library is under development and not yet considered stable. Use with caution as breaking changes to the API may be introduced until reaching v1.
 
