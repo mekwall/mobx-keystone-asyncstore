@@ -1,7 +1,6 @@
 import createDebug from "debug";
 import { action, observable, reaction, computed } from "mobx";
 import {
-  AnyModel,
   ExtendedModel,
   model,
   Model,
@@ -12,6 +11,7 @@ import {
   prop_mapObject,
   modelAction,
   ModelClassDeclaration,
+  AnyModel,
 } from "mobx-keystone";
 import { createAsyncContainer } from "./AsyncContainer";
 
@@ -200,14 +200,13 @@ export function AsyncStore<
       this.setPending();
       const items = yield fetchAll.call(this);
       if (items.length > 0) {
-        items.forEach((item: InstanceType<AModel>) => {
-          const ct =
-            this.containers.get(item.$modelId) ||
-            new AsyncContainer({ id: item.$modelId });
+        items.forEach((item: InstanceType<AModel> & { id: string }) => {
+          const id = item.id;
+          const ct = this.containers.get(id) || new AsyncContainer({ id });
           const idx = this.fetchQueue.indexOf(item.$modelId);
           this.fetchQueue.splice(idx, 1);
           ct.setValue(item);
-          this.containers.set(item.$modelId, ct);
+          this.containers.set(id, ct);
         });
       }
       this.hasAll = true;
