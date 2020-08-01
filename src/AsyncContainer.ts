@@ -47,18 +47,15 @@ export function createAsyncContainer<
     @observable
     public expiresAt = Infinity;
 
+    @computed
     get value(): InstanceType<AModel> | undefined {
       if (this.shouldFetch) {
-        // Need to check shouldFetch again to avoid race-conditions
-        // This is cheap since it's memoized
-        if (this.shouldFetch) {
-          // Get the store this container is part of
-          const parent = getParent<IBaseAsyncStore<InstanceType<AModel>>>(this);
-          debug("parent.addToFetchQueue()", parent);
-          if (parent?.addToFetchQueue) {
-            // Add itself to the fetch queue
-            parent.addToFetchQueue(this.id);
-          }
+        // Get the store this container is part of
+        const parent = getParent<IBaseAsyncStore<InstanceType<AModel>>>(this);
+        debug("parent.addToFetchQueue()", parent);
+        if (parent?.addToFetchQueue) {
+          // Add itself to the fetch queue
+          parent.addToFetchQueue(this.id);
         }
       }
       return this._value;
