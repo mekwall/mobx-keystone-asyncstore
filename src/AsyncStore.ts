@@ -253,6 +253,7 @@ export function AsyncStore<
         this.containers.set(id, ct);
       }
       if (ct.shouldFetch && !this.fetchQueue.includes(id)) {
+        ct.setPending();
         this.addToFetchQueue(id);
       }
       return ct;
@@ -269,6 +270,7 @@ export function AsyncStore<
           this.containers.set(id, ct);
         }
         if (ct.shouldFetch) {
+          ct.setPending();
           idsToFetch.push(id);
         }
         return ct;
