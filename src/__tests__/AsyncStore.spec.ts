@@ -49,7 +49,7 @@ describe("AsyncStore", () => {
     const TodoStore = createTodoStore("stores/Test1");
     const todoStore = new TodoStore({});
     expect(todoStore).toBeInstanceOf(TodoStore);
-    expect(todoStore.name).toBe("stores/Test1");
+    expect(todoStore.$modelType).toBe("stores/Test1TodoStore");
   });
 
   it("should fetch one item", async () => {
@@ -66,7 +66,7 @@ describe("AsyncStore", () => {
   });
 
   it("should fetch many items", async () => {
-    expect.assertions(10);
+    expect.assertions(12);
     const TodoStore = createTodoStore("stores/Test3");
     const todoStore = new TodoStore({});
     const containers = todoStore.getMany(["0", "1", "2"]);
