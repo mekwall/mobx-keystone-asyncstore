@@ -26,7 +26,7 @@ function createTodoStore(
 
   @model(name + "TodoStore")
   class TodoStore extends AsyncStore(TodoModel, {
-    ...{ name: name + "BaseStore", ...opts },
+    ...{ name: name + "BaseStore", ...opts, failstateTtl: 100 },
     async fetchAll() {
       return todoList;
     },
@@ -34,6 +34,9 @@ function createTodoStore(
       return todoList.filter((t) => ids.includes(t.$modelId));
     },
     async fetchOne(id: string) {
+      if (id === "does-not-exist") {
+        throw new Error(`Could not fetch ${id}`);
+      }
       return todoList.filter((t) => id === t.$modelId)[0];
     },
   }) {}
@@ -42,12 +45,15 @@ function createTodoStore(
 
 describe("AsyncStore", () => {
   it("should create AsyncStore", () => {
+    expect.assertions(2);
     const TodoStore = createTodoStore("stores/Test1");
     const todoStore = new TodoStore({});
     expect(todoStore).toBeInstanceOf(TodoStore);
+    expect(todoStore.name).toBe("stores/Test1");
   });
 
   it("should fetch one item", async () => {
+    expect.assertions(4);
     const TodoStore = createTodoStore("stores/Test2");
     const todoStore = new TodoStore({});
     const container = todoStore.getOne("0");
@@ -60,6 +66,7 @@ describe("AsyncStore", () => {
   });
 
   it("should fetch many items", async () => {
+    expect.assertions(10);
     const TodoStore = createTodoStore("stores/Test3");
     const todoStore = new TodoStore({});
     const containers = todoStore.getMany(["0", "1", "2"]);
@@ -77,6 +84,7 @@ describe("AsyncStore", () => {
   });
 
   it("should fetch all items", async () => {
+    expect.assertions(10);
     const TodoStore = createTodoStore("stores/Test4");
     const todoStore = new TodoStore({});
     todoStore.getAll();
@@ -92,6 +100,7 @@ describe("AsyncStore", () => {
   });
 
   it("should create container", async () => {
+    expect.assertions(4);
     const TodoStore = createTodoStore("stores/Test5");
     const todoStore = new TodoStore({});
     const ct1 = todoStore.createAsyncContainer("test1", true);
@@ -102,7 +111,8 @@ describe("AsyncStore", () => {
     expect(todoStore.containers.has("test2")).toBe(false);
   });
 
-  it("should not fetch when we already have", async () => {
+  it.only("should not fetch when we already have", async () => {
+    expect.assertions(8);
     const TodoStore = createTodoStore("stores/Test6");
     const todoStore = new TodoStore({});
     const addToFetchQueueSpy = jest.spyOn(todoStore, "addToFetchQueue");
@@ -121,7 +131,19 @@ describe("AsyncStore", () => {
     expect(cts2[1]).toBe(cts[2]);
     expect(fetchAllSpy).toBeCalledTimes(1);
     expect(spliceQueueSpy).toBeCalledTimes(1);
-    expect(addToFetchQueueSpy).toBeCalledTimes(1);
+    expect(addToFetchQueueSpy).toBeCalledTimes(3);
     expect(fetchOneSpy).toBeCalledTimes(0);
+  });
+
+  it("should put container in failstate", async () => {
+    expect.assertions(4);
+    const TodoStore = createTodoStore("stores/Test7");
+    const todoStore = new TodoStore({});
+    const ct = todoStore.getOne("does-not-exist");
+    await when(() => ct.isReady);
+    expect(ct.hasExpired).toBe(false);
+    expect(ct.inFailstate).toBe(true);
+    expect(ct.error).toBeDefined();
+    expect(ct.error?.message).toBe("Could not fetch does-not-exist");
   });
 });
