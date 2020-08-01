@@ -111,7 +111,7 @@ describe("AsyncStore", () => {
     expect(todoStore.containers.has("test2")).toBe(false);
   });
 
-  it.only("should not fetch when we already have", async () => {
+  it("should not fetch when we already have", async () => {
     expect.assertions(8);
     const TodoStore = createTodoStore("stores/Test6");
     const todoStore = new TodoStore({});
