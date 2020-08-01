@@ -13,7 +13,7 @@ import {
 } from "mobx-keystone";
 import { AsyncStoreOptions, IBaseAsyncStore } from "./AsyncStore";
 import { observable, computed } from "mobx";
-import { nextTick } from "next-tick";
+import nextTick from "next-tick";
 
 export interface AsyncContainerOptions<T> extends AsyncStoreOptions<T> {
   name: string;
