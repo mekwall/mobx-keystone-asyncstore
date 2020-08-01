@@ -239,8 +239,11 @@ export function AsyncStore<
     @modelAction
     public getOne(id: string): InstanceType<typeof AsyncContainer> {
       debug(`getOne()`, id);
-      const ct = this.containers.get(id) || new AsyncContainer({ id });
-      this.containers.set(id, ct);
+      let ct = this.containers.get(id);
+      if (!ct) {
+        ct = new AsyncContainer({ id });
+        this.containers.set(id, ct);
+      }
       if (ct.shouldFetch && !this.fetchQueue.includes(id)) {
         this.addToFetchQueue(id);
       }
