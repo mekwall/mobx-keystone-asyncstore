@@ -238,8 +238,8 @@ export function AsyncStore<
 
     @modelAction
     public getOne(id: string): InstanceType<typeof AsyncContainer> {
-      debug(`getOne()`, id);
       let ct = this.containers.get(id);
+      debug(`getOne()`, id, ct);
       if (!ct) {
         ct = new AsyncContainer({ id });
         this.containers.set(id, ct);
