@@ -280,6 +280,9 @@ export function AsyncStore<
     @modelAction
     public createAsyncContainer(id: string, add = false) {
       debug(`createAsyncContainer()`, id, add);
+      if (this.containers.has(id)) {
+        return this.containers.get(id);
+      }
       const ct = new AsyncContainer({ id });
       if (add) {
         this.containers.set(id, ct);
