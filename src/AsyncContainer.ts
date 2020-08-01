@@ -99,12 +99,13 @@ export function createAsyncContainer<
     @modelAction
     public setValue(value?: InstanceType<AModel>) {
       debug("setValue()", value);
-      if (ttl) {
-        this.expiresAt = Date.now() + ttl;
-      }
-      this.lastModified = Date.now();
+      this.error = undefined;
+      this.isPending = false;
       this.isReady = true;
       this._value = value;
+      this.lastModified = Date.now();
+      this.expiresAt =
+        ttl > 0 && ttl !== Infinity ? this.lastModified + ttl : 0;
     }
 
     @modelAction
@@ -116,7 +117,14 @@ export function createAsyncContainer<
     @modelAction
     public setFailstate(error?: Error) {
       debug("setFailstate()", error);
+      this.isPending = false;
+      this.isReady = true;
       this.error = error;
+      this.lastModified = Date.now();
+      this.expiresAt =
+        failstateTtl > 0 && failstateTtl !== Infinity
+          ? this.lastModified + failstateTtl
+          : 0;
     }
   }
 
