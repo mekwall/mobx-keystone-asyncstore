@@ -68,13 +68,27 @@ export function AsyncStore<
     @observable
     public isPending = false;
     @observable
-    public error?: Error;
-    @observable
     public hasAll = false;
 
     @computed
     public get values(): InstanceType<typeof AsyncContainer>[] {
       return [...this.containers.values()];
+    }
+
+    @computed
+    public get errors(): Record<string, Error> {
+      const errors: Record<string, Error> = {};
+      return this.values.reduce((acc, c) => {
+        if (c.error) {
+          return { ...acc, [c.id]: c.error };
+        }
+        return acc;
+      }, errors);
+    }
+
+    @computed
+    get inFailstate() {
+      return Object.keys(this.errors).length > 0;
     }
 
     public onInit() {
@@ -219,12 +233,6 @@ export function AsyncStore<
       this.isPending = true;
     }
 
-    @action
-    private setFailstate(error?: Error): void {
-      debug(`setFailstate()`);
-      this.error = error;
-    }
-
     // Usually only used by AsyncContainer to add itself to
     // the fetch queue
     public addToFetchQueue(id: string | string[]): void {
@@ -306,7 +314,8 @@ export interface IBaseAsyncStore<T> {
   values: T[];
   isReady: boolean;
   isPending: boolean;
-  error?: Error;
+  inFailstate: boolean;
+  errors?: Record<string, Error>;
   hasAll: boolean;
   addToFetchQueue(id: string | string[]): void;
   getOne(id: string): T;
