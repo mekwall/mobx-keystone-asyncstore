@@ -109,8 +109,15 @@ export function createAsyncContainer<
     }
 
     @modelAction
+    public setReady() {
+      this.isPending = false;
+      this.isReady = true;
+    }
+
+    @modelAction
     public setPending(isPending = true) {
       debug("setPending()", isPending);
+      this.error = undefined;
       this.isPending = isPending;
     }
 
@@ -125,6 +132,13 @@ export function createAsyncContainer<
         failstateTtl > 0 && failstateTtl !== Infinity
           ? this.lastModified + failstateTtl
           : 0;
+    }
+
+    @modelAction
+    public clearFailstate() {
+      debug("clearFailstate()");
+      this.error = undefined;
+      this.expiresAt = Date.now() - 1;
     }
   }
 
