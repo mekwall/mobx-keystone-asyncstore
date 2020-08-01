@@ -2093,6 +2093,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/next-tick@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/next-tick@npm:1.0.0"
+  checksum: f64822eae0232280b2ee42b3f80e982d7a9831e211799616dcf1cae3e6c968cb3086985b50b5ec10db6d281e0706e76786e4df61afcfbe5f64b9d3afd29632b7
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 14.0.24
   resolution: "@types/node@npm:14.0.24"
@@ -8159,6 +8166,7 @@ __metadata:
     "@semantic-release/release-notes-generator": ^9.0.1
     "@types/debug": ^4.1.5
     "@types/jest": ^26.0.7
+    "@types/next-tick": ^1.0.0
     "@types/node": ^14.0.27
     "@typescript-eslint/eslint-plugin": ^3.7.1
     "@typescript-eslint/parser": ^3.7.1
@@ -8173,6 +8181,7 @@ __metadata:
     lint-staged: ^10.2.11
     mobx: ^5.15.4
     mobx-keystone: ^0.45.0
+    next-tick: ^1.1.0
     prettier: ^2.0.5
     semantic-release: ^17.1.1
     ts-node-dev: ^1.0.0-pre.56
@@ -8283,6 +8292,13 @@ __metadata:
   version: 1.0.0
   resolution: "nerf-dart@npm:1.0.0"
   checksum: bdfdb170e1e9287a4c5212d6bc54b141fbd6f51d7ba7699ea1a26b3da73ba2387628d5cfcb5ca03997e7a6258b43a7e39f5566c51693be89b8b943b3f1938b4a
+  languageName: node
+  linkType: hard
+
+"next-tick@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "next-tick@npm:1.1.0"
+  checksum: 586cc85dcd8ec759b03269b39c8e3d899a27dbe49c472e7fb2b6a98b14a5b46d8c3b1b9a5fae29eb22881d9efa6d882d44617c51268b49d92e98ba8f20d42000
   languageName: node
   linkType: hard
 

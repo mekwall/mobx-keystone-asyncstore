@@ -13,6 +13,7 @@ import {
 } from "mobx-keystone";
 import { AsyncStoreOptions, IBaseAsyncStore } from "./AsyncStore";
 import { observable, computed } from "mobx";
+import { nextTick } from "next-tick";
 
 export interface AsyncContainerOptions<T> extends AsyncStoreOptions<T> {
   name: string;
@@ -50,13 +51,21 @@ export function createAsyncContainer<
     @computed
     get value(): InstanceType<AModel> | undefined {
       if (this.shouldFetch) {
-        // Get the store this container is part of
-        const parent = getParent<IBaseAsyncStore<InstanceType<AModel>>>(this);
-        debug("parent.addToFetchQueue()", parent);
-        if (parent?.addToFetchQueue) {
-          // Add itself to the fetch queue
-          parent.addToFetchQueue(this.id);
-        }
+        nextTick(() => {
+          // Need to check shouldFetch again to avoid race-conditions
+          // This is cheap since it's memoized
+          if (this.shouldFetch) {
+            // Get the store this container is part of
+            const parent = getParent<IBaseAsyncStore<InstanceType<AModel>>>(
+              this
+            );
+            debug("parent.addToFetchQueue()", parent);
+            if (parent?.addToFetchQueue) {
+              // Add itself to the fetch queue
+              parent.addToFetchQueue(this.id);
+            }
+          }
+        });
       }
       return this._value;
     }
@@ -93,6 +102,7 @@ export function createAsyncContainer<
       if (ttl) {
         this.expiresAt = Date.now() + ttl;
       }
+      this.lastModified = Date.now();
       this.isReady = true;
       this._value = value;
     }

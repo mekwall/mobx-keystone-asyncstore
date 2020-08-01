@@ -70,6 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ],
         ["@types/debug", "npm:4.1.5"],
         ["@types/jest", "npm:26.0.7"],
+        ["@types/next-tick", "npm:1.0.0"],
         ["@types/node", "npm:14.0.27"],
         [
           "@typescript-eslint/eslint-plugin",
@@ -99,6 +100,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "mobx-keystone",
           "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:0.45.0",
         ],
+        ["next-tick", "npm:1.1.0"],
         ["prettier", "npm:2.0.5"],
         ["semantic-release", "npm:17.1.1"],
         [
@@ -159,6 +161,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ],
                   ["@types/debug", "npm:4.1.5"],
                   ["@types/jest", "npm:26.0.7"],
+                  ["@types/next-tick", "npm:1.0.0"],
                   ["@types/node", "npm:14.0.27"],
                   [
                     "@typescript-eslint/eslint-plugin",
@@ -188,6 +191,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     "mobx-keystone",
                     "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:0.45.0",
                   ],
+                  ["next-tick", "npm:1.1.0"],
                   ["prettier", "npm:2.0.5"],
                   ["semantic-release", "npm:17.1.1"],
                   [
@@ -4150,6 +4154,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 packageLocation:
                   "./.yarn/cache/@types-minimist-npm-1.2.0-cce0ca92ef-098945c2c2.zip/node_modules/@types/minimist/",
                 packageDependencies: [["@types/minimist", "npm:1.2.0"]],
+                linkType: "HARD",
+              },
+            ],
+          ],
+        ],
+        [
+          "@types/next-tick",
+          [
+            [
+              "npm:1.0.0",
+              {
+                packageLocation:
+                  "./.yarn/cache/@types-next-tick-npm-1.0.0-692a010773-f64822eae0.zip/node_modules/@types/next-tick/",
+                packageDependencies: [["@types/next-tick", "npm:1.0.0"]],
                 linkType: "HARD",
               },
             ],
@@ -14560,6 +14578,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                   ],
                   ["@types/debug", "npm:4.1.5"],
                   ["@types/jest", "npm:26.0.7"],
+                  ["@types/next-tick", "npm:1.0.0"],
                   ["@types/node", "npm:14.0.27"],
                   [
                     "@typescript-eslint/eslint-plugin",
@@ -14589,6 +14608,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                     "mobx-keystone",
                     "virtual:59a128cba3c92f736cc6c95641000deac24983e9dc4af2135cde1ab2d4deda1777b08ae4fbb9f0093b803857b8b116619718d099b56fe4b933799de38888898b#npm:0.45.0",
                   ],
+                  ["next-tick", "npm:1.1.0"],
                   ["prettier", "npm:2.0.5"],
                   ["semantic-release", "npm:17.1.1"],
                   [
@@ -14742,6 +14762,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
                 packageLocation:
                   "./.yarn/cache/nerf-dart-npm-1.0.0-c73e718e56-bdfdb170e1.zip/node_modules/nerf-dart/",
                 packageDependencies: [["nerf-dart", "npm:1.0.0"]],
+                linkType: "HARD",
+              },
+            ],
+          ],
+        ],
+        [
+          "next-tick",
+          [
+            [
+              "npm:1.1.0",
+              {
+                packageLocation:
+                  "./.yarn/cache/next-tick-npm-1.1.0-e0eb60d6a4-586cc85dcd.zip/node_modules/next-tick/",
+                packageDependencies: [["next-tick", "npm:1.1.0"]],
                 linkType: "HARD",
               },
             ],
