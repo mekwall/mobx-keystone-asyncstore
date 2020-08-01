@@ -81,7 +81,7 @@ export function createAsyncContainer<
 
     // Do not make computed
     public get inFailstate() {
-      if (failstateTtl > 0) {
+      if (failstateTtl > 0 && failstateTtl !== Infinity) {
         return !!this.error && !this.hasExpired;
       } else {
         return !!this.error;
@@ -93,7 +93,7 @@ export function createAsyncContainer<
       if (this.expiresAt === Infinity) {
         return false;
       }
-      return this.expiresAt >= Date.now();
+      return this.expiresAt <= Date.now();
     }
 
     @modelAction
