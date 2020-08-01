@@ -122,7 +122,7 @@ export function createAsyncContainer<
     }
 
     @modelAction
-    public setFailstate(error?: Error) {
+    public setFailstate(error: Error) {
       debug("setFailstate()", error);
       this.isPending = false;
       this.isReady = true;
@@ -158,7 +158,9 @@ export interface IAsyncContainer<T> {
   inFailstate: boolean;
   shouldFetch: boolean;
   hasExpired: boolean;
-  setPending(pending?: boolean): void;
+  setReady(isReady: boolean): void;
+  setPending(isPending?: boolean): void;
   setValue(value?: T): void;
-  setFailstate(error?: Error): void;
+  setFailstate(error: Error): void;
+  clearFailstate(): void;
 }
