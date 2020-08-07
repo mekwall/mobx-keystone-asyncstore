@@ -34,7 +34,7 @@ export function createAsyncContainer<
 
   const debug = createDebug(`mobx-keystone:${name}Container`);
 
-  @model(`asyncStores/containers/${name})`)
+  @model(`asyncStores/containers/${name}`)
   class AsyncContainer extends AsyncContainerModel
     implements IAsyncContainer<InstanceType<AModel>> {
     @observable
@@ -59,7 +59,7 @@ export function createAsyncContainer<
             const parent = getParent<IBaseAsyncStore<InstanceType<AModel>>>(
               this
             );
-            debug("parent.addToFetchQueue()", parent);
+            debug(this.id, "parent.addToFetchQueue()", parent, this);
             if (parent?.addToFetchQueue) {
               // Add itself to the fetch queue
               parent.addToFetchQueue(this.id);
@@ -90,22 +90,26 @@ export function createAsyncContainer<
 
     // Do not make computed
     public get hasExpired() {
-      if (this.expiresAt === Infinity) {
-        return false;
+      let hasExpired = false;
+      if (this.expiresAt !== Infinity) {
+        hasExpired = Date.now() >= this.expiresAt;
       }
-      return this.expiresAt <= Date.now();
+      if (hasExpired) {
+        debug(this.id, "hasExpired", this);
+      }
+      return hasExpired;
     }
 
     @modelAction
     public setValue(value?: InstanceType<AModel>) {
-      debug("setValue()", value);
+      debug(this.id, "setValue()", value, this);
       this.error = undefined;
       this.isPending = false;
       this.isReady = true;
       this._value = value;
       this.lastModified = Date.now();
       this.expiresAt =
-        ttl > 0 && ttl !== Infinity ? this.lastModified + ttl : 0;
+        ttl > 0 && ttl !== Infinity ? this.lastModified + ttl : Infinity;
     }
 
     @modelAction
@@ -116,14 +120,14 @@ export function createAsyncContainer<
 
     @modelAction
     public setPending(isPending = true) {
-      debug("setPending()", isPending);
+      debug(this.id, "setPending()", isPending, this);
       this.error = undefined;
       this.isPending = isPending;
     }
 
     @modelAction
     public setFailstate(error: Error) {
-      debug("setFailstate()", error);
+      debug(this.id, "setFailstate()", error, this);
       this.isPending = false;
       this.isReady = true;
       this.error = error;
@@ -136,7 +140,7 @@ export function createAsyncContainer<
 
     @modelAction
     public clearFailstate() {
-      debug("clearFailstate()");
+      debug(this.id, "clearFailstate()", this);
       this.error = undefined;
       this.expiresAt = Date.now() - 1;
     }
