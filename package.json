@@ -1,6 +1,6 @@
 {
   "name": "mobx-keystone-asyncstore",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": "Marcus Ekwall <marcus.ekwall@gmail.com>",
   "description": "An opinionated asynchronous store and container implementation for mobx-keystone.",
   "license": "MIT",
