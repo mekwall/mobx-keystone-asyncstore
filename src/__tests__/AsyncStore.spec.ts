@@ -9,6 +9,7 @@ function createTodoStore(
 ) {
   @model(name + "TodoModel")
   class TodoModel extends Model({
+    id: tProp(types.string),
     task: tProp(types.string, "Task"),
     done: tProp(types.boolean, false),
   }) {
@@ -19,9 +20,9 @@ function createTodoStore(
   }
 
   const todoList = [
-    new TodoModel({ $modelId: "0", task: "Do it 0" }),
-    new TodoModel({ $modelId: "1", task: "Do it 1" }),
-    new TodoModel({ $modelId: "2", task: "Do it 2" }),
+    new TodoModel({ id: "0", task: "Do it 0" }),
+    new TodoModel({ id: "1", task: "Do it 1" }),
+    new TodoModel({ id: "2", task: "Do it 2" }),
   ];
 
   @model(name + "TodoStore")
@@ -31,13 +32,13 @@ function createTodoStore(
       return todoList;
     },
     async fetchMany(ids: string[]) {
-      return todoList.filter((t) => ids.includes(t.$modelId));
+      return todoList.filter((t) => ids.includes(t.id));
     },
     async fetchOne(id: string) {
       if (id === "does-not-exist") {
         throw new Error(`Could not fetch ${id}`);
       }
-      return todoList.filter((t) => id === t.$modelId)[0];
+      return todoList.filter((t) => id === t.id)[0];
     },
   }) {}
   return TodoStore;
@@ -57,11 +58,11 @@ describe("AsyncStore", () => {
     const TodoStore = createTodoStore("stores/Test2");
     const todoStore = new TodoStore({});
     const container = todoStore.getOne("0");
-    expect(container.$modelId).toBeDefined();
+    expect(container.id).toBeDefined();
     await when(() => container.isReady);
     const todo = container.value;
     expect(todo).toBeDefined();
-    expect(todo?.$modelId).toBe("0");
+    expect(todo?.id).toBe("0");
     expect(todo?.task).toBe("Do it 0");
   });
 
@@ -78,7 +79,7 @@ describe("AsyncStore", () => {
     containers.forEach((c, i) => {
       const todo = c.value;
       expect(todo).toBeDefined();
-      expect(todo?.$modelId).toBe(`${i}`);
+      expect(todo?.id).toBe(`${i}`);
       expect(todo?.task).toBe("Do it " + i);
     });
   });
@@ -94,7 +95,7 @@ describe("AsyncStore", () => {
     todoStore.containers.forEach((c, i) => {
       const todo = c.value;
       expect(todo).toBeDefined();
-      expect(todo?.$modelId).toBe(`${i}`);
+      expect(todo?.id).toBe(`${i}`);
       expect(todo?.task).toBe("Do it " + i);
     });
   });
@@ -121,7 +122,7 @@ describe("AsyncStore", () => {
     const fetchOneSpy = jest.spyOn(todoStore, "fetchOne");
     todoStore.getAll();
     await when(() => !todoStore.isPending && todoStore.isReady);
-    const cts = todoStore.getAll();
+    const cts = todoStore.values;
     const ct = todoStore.getOne("0");
     const cts2 = todoStore.getMany(["1", "2"]);
     await when(() => ct.isReady);
@@ -131,7 +132,7 @@ describe("AsyncStore", () => {
     expect(cts2[1]).toBe(cts[2]);
     expect(fetchAllSpy).toBeCalledTimes(1);
     expect(spliceQueueSpy).toBeCalledTimes(1);
-    expect(addToFetchQueueSpy).toBeCalledTimes(3);
+    expect(addToFetchQueueSpy).toBeCalledTimes(1);
     expect(fetchOneSpy).toBeCalledTimes(0);
   });
 
