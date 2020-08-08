@@ -1,3 +1,11 @@
 path_classifiers:
   test:
-    - src
+    - "**/*.test.*"
+    - "**/*.spec.*"
+extraction:
+  javascript:
+    index:
+      exclude:
+        - node_modules
+        - .pnp.js
+        - .yarn
