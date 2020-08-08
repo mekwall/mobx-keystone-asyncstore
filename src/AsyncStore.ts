@@ -33,7 +33,7 @@ export interface AsyncStoreOptions<T> {
 // since it's generated
 // eslint-disable-next-line
 export function AsyncStore<
-  AModel extends ModelClass<AnyModel>,
+  AModel extends ModelClass<AnyModel & { id: string }>,
   AProps extends AsyncStoreOptions<InstanceType<AModel>>,
   TProps extends ModelProps
 >(ItemModel: AModel, asyncProps: AProps, modelProps: TProps = {} as TProps) {
@@ -178,7 +178,7 @@ export function AsyncStore<
       try {
         const items = yield fetchMany.call(this, ids);
         items.forEach((item: InstanceType<AModel>) => {
-          const ct = this.containers.get(item.$modelId);
+          const ct = this.containers.get(item.id);
           ct?.setValue(item);
         });
       } catch (e) {
@@ -200,7 +200,7 @@ export function AsyncStore<
       this.setPending();
       const items = yield fetchAll.call(this);
       if (items.length > 0) {
-        items.forEach((item: InstanceType<AModel> & { id: string }) => {
+        items.forEach((item: InstanceType<AModel>) => {
           const id = item.id;
           const ct = this.containers.get(id) || new AsyncContainer({ id });
           const idx = this.fetchQueue.indexOf(item.$modelId);
