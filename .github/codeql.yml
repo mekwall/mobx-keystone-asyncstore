@@ -1,0 +1,4 @@
+paths-ignore:
+  - node_modules
+  - .pnp.js
+  - .yarn
